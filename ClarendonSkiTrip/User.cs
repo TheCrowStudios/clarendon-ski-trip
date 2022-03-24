@@ -32,11 +32,11 @@ namespace ClarendonSkiTrip
             using (StreamReader sr = new StreamReader(_path))
             {
                 string[] users = sr.ReadToEnd().Split("\n");
-                
-                for (var i = 0; i < users.Length; i ++)
+
+                for (var i = 0; i < users.Length; i++)
                 {
                     string[] userInfo = users[i].Split(",");
-                    
+
                     if (userInfo[(int)Program.UserFormatEnum.username] == Username)
                     {
                         return i;

@@ -18,7 +18,7 @@ namespace ClarendonSkiTrip
         string Description { get; }
         bool InputMenu { get; }
         public Menu[] Menus { get; set; }
-        
+
 
         public Menu(Menu[] _menus)
         {
@@ -27,7 +27,7 @@ namespace ClarendonSkiTrip
                 if (Description.Length > 0) Description += $" / {_menus[i].Name} ({_menus[i].Id})";
                 if (Description.Length == 0) Description += $"{_menus[i].Name} ({_menus[i].Id})";
 
-                
+
             }
 
             Menus = _menus;
@@ -35,7 +35,8 @@ namespace ClarendonSkiTrip
 
         public Menu(Program.MenuIDs _name)
         {
-            switch (_name) {
+            switch (_name)
+            {
                 case Program.MenuIDs.login:
                     Name = _name;
                     MenuName = MenuLogin.Name;
@@ -74,7 +75,7 @@ namespace ClarendonSkiTrip
                     Id = MenuQuiz.Id;
                     InputMenu = MenuQuiz.InputMenu;
                     break;
-                
+
                 case Program.MenuIDs.information:
                     Name = _name;
                     MenuName = MenuInformation.Name;
@@ -127,7 +128,7 @@ namespace ClarendonSkiTrip
                 case Program.MenuIDs.quiz:
                     MenuQuiz.Run();
                     break;
-                
+
                 case Program.MenuIDs.information:
                     MenuInformation.Run();
                     break;
@@ -146,9 +147,11 @@ namespace ClarendonSkiTrip
             {
                 menuOption = Input.GetInt("Menu");
 
-                if (menuOption < 1 || menuOption > _menus.Length) {
+                if (menuOption < 1 || menuOption > _menus.Length)
+                {
                     Console.WriteLine("Menu does not exist!");
-                } else
+                }
+                else
                 {
                     return _menus[menuOption - 1];
                 }
@@ -161,14 +164,14 @@ namespace ClarendonSkiTrip
                     }
                 }*/
 
-                
+
                 //menuOption = '\0';
             } while (menuOption < 1 || menuOption > _menus.Length);
 
             return _menus[0];
         }
 
-        public static void Title(string _title) 
+        public static void Title(string _title)
         {
             Console.Clear();
             Console.Write($"Menu: ");
@@ -209,13 +212,13 @@ namespace ClarendonSkiTrip
                         Program.Logout();
                         break;
 
-                    /*case Program.MenuIDs.leaderboard:
-                        Program.ChangeMenu(Program.Menus[(int)Program.MenuIDs.leaderboard]);
-                        break;
+                        /*case Program.MenuIDs.leaderboard:
+                            Program.ChangeMenu(Program.Menus[(int)Program.MenuIDs.leaderboard]);
+                            break;
 
-                    case Program.MenuIDs.quiz:
-                        Program.ChangeMenu(Program.Menus[(int)Program.MenuIDs.quiz]);
-                        break;*/
+                        case Program.MenuIDs.quiz:
+                            Program.ChangeMenu(Program.Menus[(int)Program.MenuIDs.quiz]);
+                            break;*/
                 }
 
                 Program.ChangeMenu(MenuOption);
@@ -270,7 +273,7 @@ namespace ClarendonSkiTrip
             {
                 if (questions[i].Run() == true)
                 {
-                    if (i == questions.Length-1) correctAnswers += $"{i + 1}";
+                    if (i == questions.Length - 1) correctAnswers += $"{i + 1}";
                     else correctAnswers += $"{i + 1}, ";
 
                     score += 1;
@@ -354,7 +357,7 @@ namespace ClarendonSkiTrip
             Console.WriteLine("|                            |");
             Console.WriteLine("+============================+");
             Console.ResetColor();
-            
+
             if (Menus.Length > 0)
             {
                 if (Text.Length == 0) Text = Menu.CreateDescription(Menus);
@@ -395,125 +398,147 @@ namespace ClarendonSkiTrip
                     case 2:
                         DeleteUser();
                         break;
-                    
+
                     case 3:
-                    EditUser();
-                    break;
+                        EditUser();
+                        break;
 
                     case 4:
-                    Program.Back();
-                    return;
+                        Program.Back();
+                        return;
                 }
             }
         }
 
         public static void AddUser(bool forceAdmin = false)
         {
-            do {
-            string name;
-            
-            do {
-                name = Input.GetInput("Name");
-
-                if (String.IsNullOrWhiteSpace(name) || name.Contains(" ") || name.Contains(",") || name.Contains("\\")) Console.WriteLine("Name must not be empty or contain special characters");
-            } while (String.IsNullOrWhiteSpace(name) || name.Contains(" ") || name.Contains(",") || name.Contains("\\"));
-
-            string lastName;
-            
-            do {
-                lastName = Input.GetInput("Last name");
-
-                if (String.IsNullOrWhiteSpace(lastName) || lastName.Contains(" ") || lastName.Contains(",") || lastName.Contains("\\")) Console.WriteLine("Last name must not be empty or contain special characters");
-            } while (String.IsNullOrWhiteSpace(lastName) || lastName.Contains(" ") || lastName.Contains(",") || lastName.Contains("\\"));
-            
-            char gender;
-
-            do {
-                gender = Input.GetCharInput("Gender (M / F)");
-
-                if (gender != 'm' && gender != 'f' && gender != 'M' && gender != 'F') Console.WriteLine("Invalid gender");
-            } while (gender != 'm' && gender != 'f' && gender != 'M' && gender != 'F');
-            
-            string password;
-            string passwordConfirm;
-
             do
             {
-                password = Input.GetPrivateInput("Password");
-                passwordConfirm = Input.GetPrivateInput("Confirm password");
+                string name;
 
-                if (password != passwordConfirm)
+                do
                 {
-                    Console.WriteLine("Passwords do not match");
-                } else if (password.Length < 5) {
-                    Console.WriteLine("Password must be 5 characters or longer");
-                }
-            } while (password != passwordConfirm | password.Length < 5);
+                    name = Input.GetInput("Name");
 
-            password = FileEdit.Sha256Hash(password);
+                    if (String.IsNullOrWhiteSpace(name) || name.Contains(" ") || name.Contains(",") || name.Contains("\\")) Console.WriteLine("Name must not be empty or contain special characters");
+                } while (String.IsNullOrWhiteSpace(name) || name.Contains(" ") || name.Contains(",") || name.Contains("\\"));
 
-            bool admin = forceAdmin;
+                string lastName;
 
-            if (!forceAdmin)
-            {
-                if (Input.GetYesNo("Should this user have admin privileges")) admin = true;
-            }
+                do
+                {
+                    lastName = Input.GetInput("Last name");
 
-            string username = name.Substring(0, 1) + lastName;
+                    if (String.IsNullOrWhiteSpace(lastName) || lastName.Contains(" ") || lastName.Contains(",") || lastName.Contains("\\")) Console.WriteLine("Last name must not be empty or contain special characters");
+                } while (String.IsNullOrWhiteSpace(lastName) || lastName.Contains(" ") || lastName.Contains(",") || lastName.Contains("\\"));
 
-            int userId = 0;
+                char gender;
 
-            string write = "";
+                do
+                {
+                    gender = Input.GetCharInput("Gender (M / F)");
 
-            for (var i = 0; i < Program.UserFormat.Split(",").Length; i++)
-            {
-                if (i > 0) write += ",";
+                    if (gender != 'm' && gender != 'f' && gender != 'M' && gender != 'F') Console.WriteLine("Invalid gender");
+                } while (gender != 'm' && gender != 'f' && gender != 'M' && gender != 'F');
 
-                if (i == (int)Program.UserFormatEnum.username) {
-                    string[] users;
+                string password;
+                string passwordConfirm;
 
-                    using (StreamReader sr = new StreamReader(Program.PathUsers)) {
-                        users = sr.ReadToEnd().Split("\n");
+                do
+                {
+                    password = Input.GetPrivateInput("Password");
+                    passwordConfirm = Input.GetPrivateInput("Confirm password");
+
+                    if (password != passwordConfirm)
+                    {
+                        Console.WriteLine("Passwords do not match");
                     }
-                    
-                    for (var j = 0; j < users.Length; j ++) {
-                        if (users[j].Split(",")[(int)Program.UserFormatEnum.username] == username + userId) userId += 1;
+                    else if (password.Length < 5)
+                    {
+                        Console.WriteLine("Password must be 5 characters or longer");
+                    }
+                } while (password != passwordConfirm | password.Length < 5);
+
+                password = FileEdit.Sha256Hash(password);
+
+                bool admin = forceAdmin;
+
+                if (!forceAdmin)
+                {
+                    if (Input.GetYesNo("Should this user have admin privileges")) admin = true;
+                }
+
+                string username = name.Substring(0, 1) + lastName;
+
+                int userId = 0;
+
+                string write = "";
+
+                for (var i = 0; i < Program.UserFormat.Split(",").Length; i++)
+                {
+                    if (i > 0) write += ",";
+
+                    if (i == (int)Program.UserFormatEnum.username)
+                    {
+                        string[] users;
+
+                        using (StreamReader sr = new StreamReader(Program.PathUsers))
+                        {
+                            users = sr.ReadToEnd().Split("\n");
+                        }
+
+                        for (var j = 0; j < users.Length; j++)
+                        {
+                            if (users[j].Split(",")[(int)Program.UserFormatEnum.username] == username + userId) userId += 1;
+                        }
+
+                        username += userId;
+
+                        write += username;
+                    }
+                    else if (i == (int)Program.UserFormatEnum.password)
+                    {
+                        write += password;
+                    }
+                    else if (i == (int)Program.UserFormatEnum.name)
+                    {
+                        write += name;
+                    }
+                    else if (i == (int)Program.UserFormatEnum.lastName)
+                    {
+                        write += lastName;
+                    }
+                    else if (i == (int)Program.UserFormatEnum.gender)
+                    {
+                        write += gender;
+                    }
+                    else if (i == (int)Program.UserFormatEnum.op && admin)
+                    {
+                        write += "1";
+                    }
+                    else if (i == (int)Program.UserFormatEnum.dateAdded)
+                    {
+                        write += DateTime.Now.ToString();
+                    }
+                    else if (i == (int)Program.UserFormatEnum.dateEdited)
+                    {
+                        write += DateTime.Now.ToString();
+                    }
+                    else
+                    {
+                        write += "0";
                     }
 
-                    username += userId;
-                    
-                    write += username;
-                } else if (i == (int)Program.UserFormatEnum.password) {
-                    write += password;
-                } else if (i == (int)Program.UserFormatEnum.name) {
-                    write += name;
-                } else if (i == (int)Program.UserFormatEnum.lastName) {
-                    write += lastName;
-                } else if (i == (int)Program.UserFormatEnum.gender) {
-                    write += gender;
-                } else if (i == (int)Program.UserFormatEnum.op && admin)
-                {
-                    write += "1";
-                } else if (i == (int)Program.UserFormatEnum.dateAdded) {
-                    write += DateTime.Now.ToString();
-                } else if (i == (int)Program.UserFormatEnum.dateEdited) {
-                    write += DateTime.Now.ToString();
-                }
-                else
-                {
-                    write += "0";
+                    if (i == Program.UserFormat.Split(",").Length - 1) write += "\n";
                 }
 
-                if (i == Program.UserFormat.Split(",").Length - 1) write += "\n";
-            }
+                using (StreamWriter sw = new StreamWriter(Program.PathUsers, true))
+                {
+                    sw.Write(write);
+                }
 
-            using (StreamWriter sw = new StreamWriter(Program.PathUsers, true))
-            {
-                sw.Write(write);
-            }
-
-            Console.WriteLine($"Added user with username {username}");
-            Input.End();
+                Console.WriteLine($"Added user with username {username}");
+                Input.End();
             } while (Input.GetYesNo("Do you want to add another user?"));
         }
 
@@ -545,7 +570,8 @@ namespace ClarendonSkiTrip
             }
         }
 
-        static void EditUser() {
+        static void EditUser()
+        {
             string username = Input.GetInput("Username");
 
             int userIndex = User.FindUserIndex(username, Program.PathUsers);
@@ -560,61 +586,67 @@ namespace ClarendonSkiTrip
 
             char input = Input.GetCharInput("Value");
 
-            switch (input) {
+            switch (input)
+            {
                 case 'p':
-                string password = Input.GetPrivateInput("New password");
-                string passwordConfirm = Input.GetPrivateInput("Confirm password");
+                    string password = Input.GetPrivateInput("New password");
+                    string passwordConfirm = Input.GetPrivateInput("Confirm password");
 
-                if (password == passwordConfirm) FileEdit.EditUser(username, Program.UserFormatEnum.password, FileEdit.Sha256Hash(password), Program.PathUsers);
-                break;
+                    if (password == passwordConfirm) FileEdit.EditUser(username, Program.UserFormatEnum.password, FileEdit.Sha256Hash(password), Program.PathUsers);
+                    break;
 
                 case 't':
-                string users;
+                    string users;
 
-                using (StreamReader sr = new StreamReader(Program.PathUsers)) {
-                    users = sr.ReadToEnd();
-                }
-
-                string[] user = users.Split("\n")[userIndex].Split(",");
-                
-                for (var i = 0; i < 4; i ++) {
-                    Console.WriteLine($"Current value for time {i}: {user[(int)Program.UserFormatEnum.time + i]}");
-                    int time = Input.GetInt($"New time {i}");
-                    
-                    switch (i) {
-                        case 0:
-                        FileEdit.EditUser(username, Program.UserFormatEnum.time, Convert.ToString(time), Program.PathUsers);
-                        break;
-
-                        case 1:
-                        FileEdit.EditUser(username, Program.UserFormatEnum.time2, Convert.ToString(time), Program.PathUsers);
-                        break;
-
-                        case 2:
-                        FileEdit.EditUser(username, Program.UserFormatEnum.time3, Convert.ToString(time), Program.PathUsers);
-                        break;
-
-                        case 3:
-                        FileEdit.EditUser(username, Program.UserFormatEnum.time4, Convert.ToString(time), Program.PathUsers);
-                        break;
+                    using (StreamReader sr = new StreamReader(Program.PathUsers))
+                    {
+                        users = sr.ReadToEnd();
                     }
-                }
 
-                FileEdit.SetUserGroups(Program.PathUsers);
-                break;
+                    string[] user = users.Split("\n")[userIndex].Split(",");
+
+                    for (var i = 0; i < 4; i++)
+                    {
+                        Console.WriteLine($"Current value for time {i}: {user[(int)Program.UserFormatEnum.time + i]}");
+                        int time = Input.GetInt($"New time {i}");
+
+                        switch (i)
+                        {
+                            case 0:
+                                FileEdit.EditUser(username, Program.UserFormatEnum.time, Convert.ToString(time), Program.PathUsers);
+                                break;
+
+                            case 1:
+                                FileEdit.EditUser(username, Program.UserFormatEnum.time2, Convert.ToString(time), Program.PathUsers);
+                                break;
+
+                            case 2:
+                                FileEdit.EditUser(username, Program.UserFormatEnum.time3, Convert.ToString(time), Program.PathUsers);
+                                break;
+
+                            case 3:
+                                FileEdit.EditUser(username, Program.UserFormatEnum.time4, Convert.ToString(time), Program.PathUsers);
+                                break;
+                        }
+                    }
+
+                    FileEdit.SetUserGroups(Program.PathUsers);
+                    break;
             }
         }
     }
 
-    class MenuInformation {
+    class MenuInformation
+    {
         public static Program.MenuIDs NameId = Program.MenuIDs.information;
         public static string Name = "Information";
         public static char Id = 'k';
         public static bool InputMenu = false;
 
-        public static void Run() {
+        public static void Run()
+        {
             FileEdit.SetUserGroups(Program.PathUsers);
-            
+
             if (Program.CurrentUser.Operator)
             {
                 string[] users;
@@ -629,66 +661,67 @@ namespace ClarendonSkiTrip
                 string head = $"| {entries[0]} | {entries[1]} | {entries[2]} | {entries[3]} | {entries[4]} |";
 
                 string line = "";
-                
-                for (var i = 0; i < head.Length; i ++) {
+
+                for (var i = 0; i < head.Length; i++)
+                {
                     if (i == 0) line += "+";
                     else if (i == head.Length - 1) line += "+";
                     else line += "-";
                 }
-                
+
                 Console.WriteLine(line);
                 Console.WriteLine(head);
                 Console.WriteLine(line);
 
-                for (var i = 0; i < users.Length; i ++)
+                for (var i = 0; i < users.Length; i++)
                 {
-                        string[] user = users[i].Split(",");
+                    string[] user = users[i].Split(",");
 
-                        int averageTime = (Convert.ToInt16(user[(int)Program.UserFormatEnum.time]) + Convert.ToInt16(user[(int)Program.UserFormatEnum.time2]) + Convert.ToInt16(user[(int)Program.UserFormatEnum.time3]) + Convert.ToInt16(user[(int)Program.UserFormatEnum.time4])) / 4;
+                    int averageTime = (Convert.ToInt16(user[(int)Program.UserFormatEnum.time]) + Convert.ToInt16(user[(int)Program.UserFormatEnum.time2]) + Convert.ToInt16(user[(int)Program.UserFormatEnum.time3]) + Convert.ToInt16(user[(int)Program.UserFormatEnum.time4])) / 4;
 
-                        string username = user[(int)Program.UserFormatEnum.username];
+                    string username = user[(int)Program.UserFormatEnum.username];
 
-                        Console.Write($"| {username} ");
+                    Console.Write($"| {username} ");
 
-                        for (var j = 0; j < entries[0].Length - username.Length; j ++)
-                        {
-                            Console.Write(" ");
-                        }
-
-                        string name = $"| {user[(int)Program.UserFormatEnum.name]} {user[(int)Program.UserFormatEnum.lastName]} ";
-
-                        Console.Write(name);
-
-                        for (var j = 0; j < entries[1].Length - name.Length + 3; j ++)
-                        {
-                            Console.Write(" ");
-                        }
-
-                        Console.Write($"| {user[(int)Program.UserFormatEnum.gender]} ");
-
-                        for (var j = 0; j < entries[2].Length - user[(int)Program.UserFormatEnum.gender].Length; j ++)
-                        {
-                            Console.Write(" ");
-                        }
-
-                        Console.Write($"| {averageTime} ");
-
-                        for (var j = 0; j < entries[3].Length - Convert.ToString(averageTime).Length; j++)
-                        {
-                            Console.Write(" ");
-                        }
-
-                        Console.Write($"| {user[(int)Program.UserFormatEnum.group]} ");
-
-                        for (var j = 0; j < entries[4].Length - user[(int)Program.UserFormatEnum.group].Length; j++)
-                        {
-                            Console.Write(" ");
-                        }
-
-                        Console.WriteLine("|");
+                    for (var j = 0; j < entries[0].Length - username.Length; j++)
+                    {
+                        Console.Write(" ");
                     }
 
-                    Console.WriteLine(line);
+                    string name = $"| {user[(int)Program.UserFormatEnum.name]} {user[(int)Program.UserFormatEnum.lastName]} ";
+
+                    Console.Write(name);
+
+                    for (var j = 0; j < entries[1].Length - name.Length + 3; j++)
+                    {
+                        Console.Write(" ");
+                    }
+
+                    Console.Write($"| {user[(int)Program.UserFormatEnum.gender]} ");
+
+                    for (var j = 0; j < entries[2].Length - user[(int)Program.UserFormatEnum.gender].Length; j++)
+                    {
+                        Console.Write(" ");
+                    }
+
+                    Console.Write($"| {averageTime} ");
+
+                    for (var j = 0; j < entries[3].Length - Convert.ToString(averageTime).Length; j++)
+                    {
+                        Console.Write(" ");
+                    }
+
+                    Console.Write($"| {user[(int)Program.UserFormatEnum.group]} ");
+
+                    for (var j = 0; j < entries[4].Length - user[(int)Program.UserFormatEnum.group].Length; j++)
+                    {
+                        Console.Write(" ");
+                    }
+
+                    Console.WriteLine("|");
+                }
+
+                Console.WriteLine(line);
             }
             else
             {
@@ -701,12 +734,67 @@ namespace ClarendonSkiTrip
                     user = sr.ReadToEnd().Split("\n")[userIndex].Split(",");
                 }
 
+                string[] entries = { "Username     ", "Name                 ", "Gender", "Average slope time", "Group" };
+
+                string head = $"| {entries[0]} | {entries[1]} | {entries[2]} | {entries[3]} | {entries[4]} |";
+
+                string line = "";
+
+                for (var i = 0; i < head.Length; i++)
+                {
+                    if (i == 0) line += "+";
+                    else if (i == head.Length - 1) line += "+";
+                    else line += "-";
+                }
+
+                Console.WriteLine(line);
+                Console.WriteLine(head);
+                Console.WriteLine(line);
+
                 int averageTime = (Convert.ToInt16(user[(int)Program.UserFormatEnum.time]) + Convert.ToInt16(user[(int)Program.UserFormatEnum.time2]) + Convert.ToInt16(user[(int)Program.UserFormatEnum.time3]) + Convert.ToInt16(user[(int)Program.UserFormatEnum.time4])) / 4;
 
-                Console.WriteLine($"| Username: {user[(int)Program.UserFormatEnum.username]} |");
-                Console.WriteLine($"| Average slope time: {averageTime} |");
+                string username = user[(int)Program.UserFormatEnum.username];
 
-                
+                Console.Write($"| {username} ");
+
+                for (var j = 0; j < entries[0].Length - username.Length; j++)
+                {
+                    Console.Write(" ");
+                }
+
+                string name = $"| {user[(int)Program.UserFormatEnum.name]} {user[(int)Program.UserFormatEnum.lastName]} ";
+
+                Console.Write(name);
+
+                for (var j = 0; j < entries[1].Length - name.Length + 3; j++)
+                {
+                    Console.Write(" ");
+                }
+
+                Console.Write($"| {user[(int)Program.UserFormatEnum.gender]} ");
+
+                for (var j = 0; j < entries[2].Length - user[(int)Program.UserFormatEnum.gender].Length; j++)
+                {
+                    Console.Write(" ");
+                }
+
+                Console.Write($"| {averageTime} ");
+
+                for (var j = 0; j < entries[3].Length - Convert.ToString(averageTime).Length; j++)
+                {
+                    Console.Write(" ");
+                }
+
+                Console.Write($"| {user[(int)Program.UserFormatEnum.group]} ");
+
+                for (var j = 0; j < entries[4].Length - user[(int)Program.UserFormatEnum.group].Length; j++)
+                {
+                    Console.Write(" ");
+                }
+
+                Console.WriteLine("|");
+
+                Console.WriteLine(line);
             }
 
             Input.End();
@@ -723,43 +811,44 @@ namespace ClarendonSkiTrip
 
         public static void Run()
         {
-            
+
 
             try
             {
-                do {
-                string username = Input.GetInput("Username");
-            string password = Input.GetPrivateInput("Password");
-                
-                using (StreamReader sr = new StreamReader(Program.PathUsers))
+                do
                 {
-                    //string[] users = sr.ReadToEnd().Split("\n");
+                    string username = Input.GetInput("Username");
+                    string password = Input.GetPrivateInput("Password");
 
-                    //string[] user = new string[users[0].Split(",").Length];
-
-                    string user;
-
-                    string[] values;
-
-                    while ((user = sr.ReadLine()) != null)
+                    using (StreamReader sr = new StreamReader(Program.PathUsers))
                     {
-                        values = user.Split(",");
+                        //string[] users = sr.ReadToEnd().Split("\n");
 
-                        //values = new string[value.Split(",").Length];
+                        //string[] user = new string[users[0].Split(",").Length];
 
+                        string user;
 
+                        string[] values;
 
-                        if (values[0] == username && values[1] == FileEdit.Sha256Hash(password))
+                        while ((user = sr.ReadLine()) != null)
                         {
-                            Program.CurrentUser = new User(values);
-                            Program.ChangeMenu(Program.Menus[(int)Program.MenuIDs.dashboard]);
-                            return;
+                            values = user.Split(",");
+
+                            //values = new string[value.Split(",").Length];
+
+
+
+                            if (values[0] == username && values[1] == FileEdit.Sha256Hash(password))
+                            {
+                                Program.CurrentUser = new User(values);
+                                Program.ChangeMenu(Program.Menus[(int)Program.MenuIDs.dashboard]);
+                                return;
+                            }
                         }
                     }
-                }
 
 
-                Console.WriteLine("Wrong login info!");
+                    Console.WriteLine("Wrong login info!");
                 } while (Program.CurrentUser == null);
             }
             catch (System.Exception exception)
@@ -804,13 +893,13 @@ namespace ClarendonSkiTrip
                         userValues[i, j] = users[i].Split(",")[j];
                     }
                 }
-                
+
                 Array sorted = Program.BubbleSort(userValues, (int)Program.UserFormatEnum.highscore);
                 //users = Array.ConvertAll<Array, string>(sorted, new Converter<Array, string>(users));
 
                 for (var i = 0; i < sorted.GetLength(0); i++)
                 {
-                        Console.WriteLine($"{sorted.GetValue(i, (int)Program.UserFormatEnum.username)} {sorted.GetValue(i, (int)Program.UserFormatEnum.highscore)}");
+                    Console.WriteLine($"{sorted.GetValue(i, (int)Program.UserFormatEnum.username)} {sorted.GetValue(i, (int)Program.UserFormatEnum.highscore)}");
                 }
 
                 Program.Back();

@@ -14,7 +14,8 @@ namespace ClarendonSkiTrip
         {
             using (StreamWriter sw = new StreamWriter(_path))
             {
-                for (var i = 0; i < _array.Length; i ++) {
+                for (var i = 0; i < _array.Length; i++)
+                {
                     sw.WriteLine(_array[i]);
                 }
             }
@@ -77,14 +78,17 @@ namespace ClarendonSkiTrip
             }
         }
 
-        public static void SetUserGroups(string _path) {
+        public static void SetUserGroups(string _path)
+        {
             string[] users;
-            
-            using (StreamReader sr = new StreamReader(_path)) {
+
+            using (StreamReader sr = new StreamReader(_path))
+            {
                 users = sr.ReadToEnd().Split("\n", StringSplitOptions.RemoveEmptyEntries);
             }
 
-            for (var i = 0; i < users.Length; i ++) {
+            for (var i = 0; i < users.Length; i++)
+            {
                 string[] user = users[i].Split(",");
 
                 int averageTime = (Convert.ToInt16(user[(int)Program.UserFormatEnum.time]) + Convert.ToInt16(user[(int)Program.UserFormatEnum.time2]) + Convert.ToInt16(user[(int)Program.UserFormatEnum.time3]) + Convert.ToInt16(user[(int)Program.UserFormatEnum.time4])) / 4;
@@ -94,21 +98,24 @@ namespace ClarendonSkiTrip
                 if (averageTime <= 20) group = 'A';
                 else if (averageTime > 20 && averageTime <= 30) group = 'B';
                 else group = 'C';
-                
+
                 FileEdit.EditUser(user[(int)Program.UserFormatEnum.username], Program.UserFormatEnum.group, Convert.ToString(group), _path);
             }
         }
 
-        public static string Sha256Hash(string _text) {
+        public static string Sha256Hash(string _text)
+        {
             byte[] hash;
 
-            using (SHA256 sha256 = SHA256.Create()) {
+            using (SHA256 sha256 = SHA256.Create())
+            {
                 hash = sha256.ComputeHash(UTF8Encoding.UTF8.GetBytes(_text));
             }
 
             StringBuilder stringBuilder = new StringBuilder();
-            
-            for (var i = 0; i < hash.Length; i ++) {
+
+            for (var i = 0; i < hash.Length; i++)
+            {
                 stringBuilder.Append(hash[i].ToString("x2"));
             }
 

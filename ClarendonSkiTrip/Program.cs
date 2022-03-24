@@ -86,7 +86,8 @@ namespace ClarendonSkiTrip
                     //if (CurrentUser == null) CurrentMenu = Menus[(int)MenuIDs.main];
                     Menu.Title(CurrentMenu.MenuName);
                     CurrentMenu.Run();
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     Console.WriteLine(e.ToString());
                     Input.End();
@@ -126,10 +127,12 @@ namespace ClarendonSkiTrip
                 {
                     object firstValue = valuesSorted.GetValue(i);
 
-                    if (i != valuesSorted.Length) {
-                        if (Convert.ToInt32(firstValue) < Convert.ToInt32(valuesSorted.GetValue(i+1))) {
+                    if (i != valuesSorted.Length)
+                    {
+                        if (Convert.ToInt32(firstValue) < Convert.ToInt32(valuesSorted.GetValue(i + 1)))
+                        {
                             valuesSorted.SetValue(valuesSorted.GetValue(i + 1), i);
-                            valuesSorted.SetValue(firstValue, i+1);
+                            valuesSorted.SetValue(firstValue, i + 1);
 
                             edited = true;
                         }
@@ -149,7 +152,7 @@ namespace ClarendonSkiTrip
             {
                 edited = false;
 
-                for (var i = 0; i < valuesSorted.GetLength(0)-1; i++)
+                for (var i = 0; i < valuesSorted.GetLength(0) - 1; i++)
                 {
                     int[] firstIndex = new int[] { i, _index };
                     int[] secondIndex = new int[] { i + 1, _index };
@@ -162,10 +165,10 @@ namespace ClarendonSkiTrip
                         for (var j = 0; j < valuesSorted.GetLength(1); j++)
                         {
                             object firstCurrentValue = valuesSorted.GetValue(i, j);
-                            object secondCurrentValue = valuesSorted.GetValue(i+1, j);
+                            object secondCurrentValue = valuesSorted.GetValue(i + 1, j);
 
                             valuesSorted.SetValue(secondCurrentValue, new int[] { i, j });
-                            valuesSorted.SetValue(firstCurrentValue, new int[] { i+1, j });
+                            valuesSorted.SetValue(firstCurrentValue, new int[] { i + 1, j });
                         }
 
                         edited = true;
@@ -185,9 +188,10 @@ namespace ClarendonSkiTrip
                 Console.WriteLine($"Data path created at {path}");
             }
 
-            if (!File.Exists(PathUsers)) using (FileStream fs = File.Create(PathUsers)) {
+            if (!File.Exists(PathUsers)) using (FileStream fs = File.Create(PathUsers))
+                {
                     //fs.Write(UTF8Encoding.UTF8.GetBytes(UserFormat));
-            } /*else
+                } /*else
             {
                 using (StreamReader sr = new StreamReader(PathUsers)) {
                     string[] allLines = sr.ReadToEnd().Split("\n");
@@ -222,36 +226,37 @@ namespace ClarendonSkiTrip
                 allLines = sr.ReadToEnd().Split("\n", StringSplitOptions.RemoveEmptyEntries);
             }
 
-                if (allLines.Length == 0)
-                {
-                    Console.WriteLine("There are no users in the file");
-                    Console.WriteLine("Add an admin user");
+            if (allLines.Length == 0)
+            {
+                Console.WriteLine("There are no users in the file");
+                Console.WriteLine("Add an admin user");
 
-                    MenuAdmin.AddUser(true);
+                MenuAdmin.AddUser(true);
+            }
+
+            Users = new User[allLines.Length];
+
+            for (var i = 0; i < allLines.Length; i++)
+            {
+                if (String.IsNullOrWhiteSpace(allLines[i]) && i < allLines.Length - 1)
+                {
+                    emptyLines += 1;
+                    invalidEntries = true;
                 }
 
-                Users = new User[allLines.Length];
+                string[] currentValues = allLines[i].Split(",");
 
-                for (var i = 0; i < allLines.Length; i ++)
+                if (currentValues.Length != UserFormat.Split(",").Length && i < allLines.Length - 1)
                 {
-                    if (String.IsNullOrWhiteSpace(allLines[i]) && i < allLines.Length - 1) {
-                        emptyLines += 1;
-                        invalidEntries = true;
-                    }
-
-                    string[] currentValues = allLines[i].Split(",");
-
-                    if (currentValues.Length != UserFormat.Split(",").Length && i < allLines.Length - 1)
-                    {
-                        invalidEntries = true;
-                        Console.WriteLine($"User at index {i} is an invalid entry");
-                    }
+                    invalidEntries = true;
+                    Console.WriteLine($"User at index {i} is an invalid entry");
                 }
+            }
 
-                /*if (invalidEntries)
-                {
-                    if (!Input.GetYesNo("Do you want to repair the users")) return;
-                }*/
+            /*if (invalidEntries)
+            {
+                if (!Input.GetYesNo("Do you want to repair the users")) return;
+            }*/
 
             /*for (var i = 0; i < newLines.Length; i++)
             {

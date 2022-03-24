@@ -16,21 +16,25 @@ namespace ClarendonSkiTrip
 
         public static char GetCharInput(string _text)
         {
-            while (true) {
+            while (true)
+            {
                 try
                 {
                     return Convert.ToChar(GetInput(_text));
-                } catch
+                }
+                catch
                 {
                     Console.WriteLine("Enter a char!");
                 }
             }
         }
 
-        public static bool GetYesNo(string _text) {
+        public static bool GetYesNo(string _text)
+        {
             char confirm;
 
-            do {
+            do
+            {
                 confirm = GetCharInput($"{_text} (Y/N)");
 
                 if (confirm == 'n') return false;
@@ -44,7 +48,8 @@ namespace ClarendonSkiTrip
             try
             {
                 return Convert.ToInt16(GetInput(_text));
-            } catch (Exception)
+            }
+            catch (Exception)
             {
                 Console.Error.Write("Enter a number");
                 return 0;
@@ -65,7 +70,7 @@ namespace ClarendonSkiTrip
 
             string text = "";
 
-            while((key = Console.ReadKey(true).KeyChar) == key)
+            while ((key = Console.ReadKey(true).KeyChar) == key)
             {
                 if (key == ((char)ConsoleKey.Enter))
                 {
@@ -76,7 +81,7 @@ namespace ClarendonSkiTrip
                 if (key == (char)ConsoleKey.Backspace && text.Length > 0)
                 {
                     Console.Write("\b \b");
-                    text = text.Substring(0, text.Length-1);
+                    text = text.Substring(0, text.Length - 1);
                 }
                 else
                 {
